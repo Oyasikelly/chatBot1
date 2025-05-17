@@ -1,0 +1,357 @@
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	display: flex;
+	height: 100vh;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(
+			to right,
+			rgba(0, 0, 0, 0.5),
+			rgba(21, 3, 39, 0.18)
+		),
+		url(/assest/kelsAIbackground.gif);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	padding: 1rem;
+}
+
+/* Wrapper */
+.wrapper {
+	border: 1px solid rgb(150, 53, 242);
+	width: 100%;
+	max-width: 500px;
+	height: 80vh;
+	border-radius: 10px;
+	overflow: hidden;
+	font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+/* Header */
+.header {
+	background-color: rgb(165, 70, 255);
+	padding: 1.5rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.header .logo {
+	color: white;
+	font-weight: 400;
+	font-size: 1.8rem;
+}
+.header .mobile-menue {
+	cursor: pointer;
+	padding: 8px 18px;
+	border-radius: 50%;
+	transition: background 0.3s ease-in;
+}
+.header .mobile-menue:hover {
+	background-color: rgb(118, 27, 203);
+}
+.header .mobile-menue:active {
+	background-color: rgb(150, 53, 242);
+}
+.header .mobile-menue div {
+	width: 5px;
+	height: 5px;
+	margin-top: 3px;
+	background-color: white;
+}
+
+/* Header menu */
+/* Header menu */
+.header-menu {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.452);
+	backdrop-filter: blur(6px);
+	flex-direction: column;
+	padding-top: 3rem;
+	line-height: 3rem;
+	align-items: center;
+	z-index: 10;
+	width: 0;
+	overflow: hidden;
+	opacity: 0;
+	visibility: hidden;
+	transition: width 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.header-menu .menuItem {
+	color: white;
+	transition: opacity 0.3s ease-in-out;
+	cursor: pointer;
+}
+.header-menu .menuItem:hover {
+	opacity: 0.6;
+}
+.header-menu .menuItem:active {
+	opacity: 0.8;
+}
+
+/* Toggle this class via JavaScript */
+.header-menu.slideIn {
+	width: 60%;
+	opacity: 1;
+	visibility: visible;
+	display: flex;
+}
+
+/* Chat container */
+.chat-container {
+	background-color: rgba(0, 0, 0, 0.452);
+	backdrop-filter: blur(10px);
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	padding-bottom: 1rem;
+	overflow-y: auto;
+	scroll-behavior: smooth;
+}
+.chat-container::-webkit-scrollbar {
+	display: none;
+}
+
+.botMessage .resultContainer {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	margin: 1rem 1rem 0 1.5rem;
+	max-width: 90%;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+.resultContainer .botResult {
+	background-color: white;
+	border-radius: 10px;
+	border-bottom-left-radius: 0;
+	padding: 1rem;
+}
+.resultContainer .botlogo {
+	background-color: rgb(150, 53, 242);
+	color: white;
+	border-radius: 50%;
+	padding: 0.4rem 0.5rem;
+}
+
+/* Bot typing animation */
+.botsearching {
+	display: flex;
+	align-items: center;
+	margin: 0.5rem 0 0 1rem;
+	gap: 10px;
+	width: fit-content;
+}
+.botsearching .searchingAnimation {
+	display: flex;
+	gap: 5px;
+	padding: 10px;
+}
+.searchingAnimation div {
+	width: 10px;
+	height: 10px;
+	background-color: rgb(150, 53, 242);
+	border-radius: 50%;
+	animation: loading 2s ease-in-out infinite;
+}
+.searchingAnimation div:nth-child(1) {
+	animation-delay: 0.2s;
+}
+.searchingAnimation div:nth-child(2) {
+	animation-delay: 0.4s;
+}
+.searchingAnimation div:nth-child(3) {
+	animation-delay: 0.6s;
+}
+.searchingAnimation div:nth-child(4) {
+	animation-delay: 0.8s;
+}
+
+@keyframes loading {
+	0%,
+	44% {
+		transform: translateY(0);
+	}
+	28% {
+		transform: translateY(-4px);
+		opacity: 0.8;
+	}
+	44% {
+		opacity: 0.2;
+	}
+}
+
+.auto-color {
+	animation: autocolor 1.8s normal infinite;
+	padding: 10px;
+}
+
+/* User message */
+.userMessage {
+	background-color: rgb(150, 53, 242);
+	color: white;
+	padding: 1rem;
+	margin: 1rem 1rem 0 auto;
+	width: 90%;
+	max-width: fit-content;
+	border-radius: 10px;
+	border-bottom-right-radius: 0;
+	word-wrap: break-word;
+}
+.wrapUserText {
+	word-wrap: break-word;
+}
+.userImg {
+	align-self: flex-end;
+	max-width: 100px;
+	margin: 1rem 1rem 0 auto;
+	border-radius: 10px;
+}
+.userImg img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+}
+
+/* Footer */
+#footer {
+	padding: 0.5rem 1rem;
+	background-color: rgb(150, 53, 242);
+}
+.inputContainer {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+.inputContainer .selectFile {
+	background-color: rgb(217, 221, 227);
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	transition: transform 0.3s ease-in-out;
+}
+.inputContainer .selectFile span {
+	position: relative;
+	left: 8px;
+}
+.inputContainer .selectFile:hover {
+	transform: scale(1.1);
+}
+.inputContainer .selectFile:active {
+	transform: scale(1);
+}
+.inputContainer .selectFile input {
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+.inputContainer .userPrompt {
+	flex-grow: 1;
+	display: flex;
+}
+.userPrompt input {
+	height: 40px;
+	width: 100%;
+	border-radius: 7px 0 0 7px;
+	border: none;
+	padding: 0.8rem;
+	outline: none;
+}
+.userPrompt button {
+	padding: 0.5rem;
+	border-radius: 0 7px 7px 0;
+	border: 3px solid white;
+	background-color: rgb(150, 53, 242);
+	color: white;
+}
+
+/* File preview */
+.selectedFile {
+	max-width: 170px;
+	width: fit-content;
+	height: 70px;
+	position: absolute;
+	top: -4rem;
+	border-radius: 10px;
+}
+.selectedFile img {
+	max-width: 100%;
+	height: 70px;
+	border-radius: 10px 0 10px 0;
+}
+
+.show {
+	display: block;
+}
+
+/* ----------- Responsive Design ----------- */
+
+@media (max-width: 768px) {
+	.wrapper {
+		width: 95%;
+		height: 90vh;
+	}
+
+	.header {
+		padding: 1rem;
+	}
+	.header .logo {
+		font-size: 1.5rem;
+	}
+
+	.botMessage .resultContainer {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+
+	.userMessage {
+		width: 85%;
+	}
+}
+
+@media (max-width: 480px) {
+	.header .logo {
+		font-size: 1.2rem;
+	}
+
+	.inputContainer .selectFile {
+		width: 35px;
+		height: 35px;
+	}
+
+	.userPrompt input {
+		padding: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.userPrompt button {
+		padding: 0.4rem;
+		font-size: 0.9rem;
+	}
+
+	.userMessage {
+		width: 80%;
+		font-size: 0.9rem;
+	}
+
+	.botResult {
+		font-size: 0.9rem;
+	}
+}
