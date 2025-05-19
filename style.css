@@ -138,6 +138,7 @@ body {
 	border-radius: 10px;
 	border-bottom-left-radius: 0;
 	padding: 1rem;
+	text-decoration: none;
 }
 .resultContainer .botlogo {
 	background-color: rgb(150, 53, 242);
@@ -230,6 +231,7 @@ body {
 #footer {
 	padding: 0.5rem 1rem;
 	background-color: rgb(150, 53, 242);
+	position: relative;
 }
 .inputContainer {
 	display: flex;
@@ -304,9 +306,16 @@ body {
 /* ----------- Responsive Design ----------- */
 
 @media (max-width: 768px) {
+	body {
+		padding: 0rem;
+		justify-content: flex-start;
+		align-items: flex-start;
+		margin: 0;
+	}
 	.wrapper {
-		width: 95%;
-		height: 90vh;
+		width: 100%;
+		height: 100vh;
+		border-radius: 0;
 	}
 
 	.header {

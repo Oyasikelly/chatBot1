@@ -76,15 +76,22 @@ const generateBotResponse = async (userData) => {
 		}
 
 		const data = await response.json();
-		const apiResponseText = data?.candidates?.[0].content?.parts?.[0]?.text
-			?.replace(/\*\*(.*?)\*\*/g, "$1")
-			.trim();
+		const rawText =
+			data?.candidates?.[0].content?.parts?.[0]?.text ||
+			"🤖 I couldn't understand the image.";
+		const html = marked.parse(rawText); // Convert markdown to HTML
+		const apiResponseText = DOMPurify.sanitize(html); // Sanitize for safety
 
 		// remove animation
 		thinkingDiv.remove();
-		displayBotResponse(
-			apiResponseText || "🤖 I couldn't understand the image."
-		);
+		displayBotResponse(apiResponseText);
+
+		// Save user and bot messages to local storage
+		// After inserting user message into DOM
+		saveUserMessage(userInput.value.trim(), selectedFile.src || null);
+
+		// After inserting bot message into DOM
+		saveBotMessage(apiResponseText);
 
 		// Reset file after submission
 		userFile.file = { data: null, mime_type: null };
@@ -97,14 +104,21 @@ const generateBotResponse = async (userData) => {
 	}
 };
 
+// Handle when user send their message to the bot
 userPrompt.addEventListener("submit", function (e) {
 	e.preventDefault();
-	// console.log(chatContainer.querySelectorAll("div").length);
 	if (userInput.value !== "") {
 		chatContainer.scrollTop = chatContainer.scrollHeight;
-		// userData(userInput, chatContainer);
+		if (selectFile.value !== "") {
+		}
 		const user = `
-		<div class="userImg" ><img  src= "${selectedFile.src}" alt="userImg" /></div>
+		${
+			selectFile.value !== ""
+				? `<div class="userImg">
+					<img src="${selectedFile.src}" alt="userImg" />
+				</div>`
+				: ""
+		}
                 <div class="userMessage">
                     <p class="wrapUserText">${userInput.value}</p>
                 </div>
@@ -113,6 +127,11 @@ userPrompt.addEventListener("submit", function (e) {
 
 		const userData = userInput.value.trim();
 
+		// ✅ Save to localStorage
+		saveUserMessage(
+			userData,
+			selectFile.value !== "" ? selectedFile.src : null
+		);
 		generateBotResponse(userData);
 		displayBotResponse();
 
@@ -120,11 +139,12 @@ userPrompt.addEventListener("submit", function (e) {
 	}
 });
 
+// Getting the fetch data from the API Call
 function getApiResponseText(response) {
 	displayBotResponse(response);
 }
 
-// function userData(userInput, chatContainer) {}
+// When bot is fetching data, it begins to load.
 function Thinking() {
 	const thinkingHTML = `
 		<div class="botsearching">
@@ -142,6 +162,7 @@ function Thinking() {
 	return lastInserted; // return the inserted DOM node so it can be removed later
 }
 
+// Handle bot response after fetching data
 function displayBotResponse(response) {
 	if (response !== undefined) {
 		const bot = `
@@ -158,3 +179,66 @@ function displayBotResponse(response) {
 		chatContainer.scrollTop = chatContainer.scrollHeight;
 	}
 }
+
+//Handling chat History
+
+let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+
+// After user sends a message
+function saveUserMessage(message, imageSrc = null) {
+	const trimmedMessage = message.trim();
+	const validImage = imageSrc && !imageSrc.includes("index.html");
+
+	// Only save if there's a real message or a valid image
+	if (!trimmedMessage && !validImage) return;
+
+	chatHistory.push({
+		role: "user",
+		message: trimmedMessage,
+		image: validImage ? imageSrc : null,
+	});
+	localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+}
+
+// After bot responds
+function saveBotMessage(message) {
+	chatHistory.push({
+		role: "bot",
+		message,
+	});
+	localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+}
+
+// Load chat history on page load
+function restoreChatFromStorage() {
+	const storedChat = JSON.parse(localStorage.getItem("chatHistory")) || [];
+	storedChat.forEach((entry) => {
+		if (entry.role === "user") {
+			const user = `
+		${
+			entry.image
+				? `<div class="userImg"><img src="${entry.image}" alt="userImg" /></div>`
+				: ""
+		}
+		<div class="userMessage">
+			<p class="wrapUserText">${entry.message}</p>
+		</div>
+	`;
+			chatContainer.insertAdjacentHTML("beforeend", user);
+		} else if (entry.role === "bot") {
+			const bot = `
+				<div class="botMessage">
+					<div class="resultContainer">
+						<div class="botlogo">🤖</div>
+						<div class="botResult">
+							${entry.message}
+						</div>
+					</div>		
+				</div>
+			`;
+			chatContainer.insertAdjacentHTML("beforeend", bot);
+		}
+	});
+	chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+restoreChatFromStorage();
