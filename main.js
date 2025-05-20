@@ -242,3 +242,8 @@ function restoreChatFromStorage() {
 	chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 restoreChatFromStorage();
+// Clear History
+document.querySelector("#New-Chat").addEventListener("click", () => {
+	// localStorage.removeItem("chatHistory");
+	chatContainer.innerHTML = "";
+});
