@@ -100,6 +100,18 @@ body {
 .header-menu .menuItem:active {
 	opacity: 0.8;
 }
+.header-menu div:nth-child(2):hover {
+	cursor: not-allowed;
+}
+.header-menu div:nth-child(3):hover {
+	cursor: not-allowed;
+}
+.header-menu div:nth-child(4):hover {
+	cursor: not-allowed;
+}
+.header-menu div:nth-child(5):hover {
+	cursor: not-allowed;
+}
 
 /* Toggle this class via JavaScript */
 .header-menu.slideIn {

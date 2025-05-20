@@ -247,3 +247,7 @@ document.querySelector("#New-Chat").addEventListener("click", () => {
 	// localStorage.removeItem("chatHistory");
 	chatContainer.innerHTML = "";
 });
+//Get chat history
+document.querySelector("#ChatHistory").addEventListener("click", () => {
+	restoreChatFromStorage();
+});
