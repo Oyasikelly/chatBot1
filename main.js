@@ -1,5 +1,12 @@
 const mobileMenu = document.querySelector(".header-menu");
 const menuIcon = document.querySelector(".mobile-menue");
+const userMessage = document.querySelector(".userMessage");
+const userInput = document.getElementById("userInput");
+const userPrompt = document.querySelector(".userPrompt");
+const chatContainer = document.querySelector(".chat-container");
+const searchingAnimation = document.querySelector(".searchingAnimation");
+let loading;
+const count = chatContainer.querySelectorAll("div").length;
 
 menuIcon.addEventListener("click", () => {
 	mobileMenu.classList.add("slideIn");
@@ -8,7 +15,11 @@ menuIcon.addEventListener("click", () => {
 mobileMenu.addEventListener("click", () => {
 	mobileMenu.classList.remove("slideIn");
 });
-
+chatContainer.addEventListener("click", () => {
+	if (mobileMenu.classList.contains("slideIn")) {
+		mobileMenu.classList.remove("slideIn");
+	}
+});
 const selectFile = document.querySelector("#fileInput");
 const selectedFile = document.querySelector("#previewFile");
 
@@ -40,14 +51,6 @@ selectFile.addEventListener("change", function () {
 		);
 	}
 });
-
-const userMessage = document.querySelector(".userMessage");
-const userInput = document.getElementById("userInput");
-const userPrompt = document.querySelector(".userPrompt");
-const chatContainer = document.querySelector(".chat-container");
-const searchingAnimation = document.querySelector(".searchingAnimation");
-let loading;
-const count = chatContainer.querySelectorAll("div").length;
 
 // API setup
 const GEMINI_API_KEY = "AIzaSyABFtyCYAg2VNvAF7QxlOfufCByEOPblu0";
@@ -90,11 +93,7 @@ const generateBotResponse = async (userData) => {
 		thinkingDiv.remove();
 		displayBotResponse(apiResponseText);
 
-		// Save user and bot messages to local storage
-		// After inserting user message into DOM
-		saveUserMessage(userInput.value.trim(), selectedFile.src || null);
-
-		// After inserting bot message into DOM
+		// ✅ Save only bot message here
 		saveBotMessage(apiResponseText);
 
 		// Reset file after submission
@@ -215,6 +214,8 @@ function saveBotMessage(message) {
 
 // Load chat history on page load
 function restoreChatFromStorage() {
+	chatContainer.innerHTML = ""; // Clear existing chat before restoring
+
 	const storedChat = JSON.parse(localStorage.getItem("chatHistory")) || [];
 	storedChat.forEach((entry) => {
 		if (entry.role === "user") {
@@ -246,12 +247,17 @@ function restoreChatFromStorage() {
 	chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 restoreChatFromStorage();
-// Clear History
+
+//New chat button
 document.querySelector("#New-Chat").addEventListener("click", () => {
-	// localStorage.removeItem("chatHistory");
 	chatContainer.innerHTML = "";
 });
 //Get chat history
 document.querySelector("#ChatHistory").addEventListener("click", () => {
 	restoreChatFromStorage();
+});
+// Clear History
+document.querySelector("#clearHistory").addEventListener("click", () => {
+	localStorage.removeItem("chatHistory");
+	chatContainer.innerHTML = "";
 });
