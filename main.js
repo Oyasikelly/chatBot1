@@ -21,7 +21,7 @@ const userFile = {
 };
 selectFile.addEventListener("change", function () {
 	const file = this.files[0];
-	if (file) {
+	if (file.type.startsWith("image/")) {
 		const reader = new FileReader();
 		reader.onload = (e) => {
 			const base64Data = e.target.result.split(",")[1];
@@ -34,6 +34,10 @@ selectFile.addEventListener("change", function () {
 			console.log(userFile);
 		};
 		reader.readAsDataURL(file);
+	} else {
+		alert(
+			"❌ Document uploads are not yet supported. Only images or text allowed."
+		);
 	}
 });
 
